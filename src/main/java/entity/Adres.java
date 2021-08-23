@@ -1,6 +1,7 @@
 package entity;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name="adres")
