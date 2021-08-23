@@ -55,9 +55,44 @@ public class AdresRepository {
         return addresses;
     }
 
-//    public Adres findByStreet(String street) {
-//        entityManager = emf.createEntityManager();
-//
-//        entityManager.close();
-//    }
+    public List<Adres> findByStreet(String street) {
+        entityManager = emf.createEntityManager();
+
+        // łączenie stringów
+        // TypedQuery<Adres> query = entityManager.createQuery("SELECT a FROM Adres a WHERE a.ulica = '"+street+"'", Adres.class);
+
+        // parametry indeksowe
+//        TypedQuery<Adres> query = entityManager.createQuery("SELECT a FROM Adres a WHERE a.ulica = ?1 OR a.nrDomu = ?2", Adres.class);
+//        query.setParameter(1, street);
+//        query.setParameter(2, "5");
+
+        // parametry nazwane
+        TypedQuery<Adres> query = entityManager.createQuery("SELECT a FROM Adres a WHERE a.ulica = :ulica OR a.nrDomu = :nrDomu", Adres.class);
+        query.setParameter("ulica", street);
+        query.setParameter("nrDomu", "5");
+
+        List<Adres> addresses = query.getResultList();
+
+        entityManager.close();
+
+        return addresses;
+    }
+
+    public void removeByStreet(String street) {
+        entityManager = emf.createEntityManager();
+
+        try {
+            entityManager.getTransaction().begin();
+
+            Query query = entityManager.createQuery("DELETE FROM Adres a WHERE a.ulica = :ulica");
+            query.setParameter("ulica", street);
+            query.executeUpdate();
+
+            entityManager.getTransaction().commit();
+        } catch (Exception e){
+            entityManager.getTransaction().rollback();
+        }
+
+        entityManager.close();
+    }
 }

@@ -12,15 +12,19 @@ public class ShopExample {
         Scanner scanner = new Scanner(System.in);
 
         int option;
-        int id;
         do {
             System.out.println("1 - save");
             System.out.println("2 - get by id");
             System.out.println("3 - remove");
             System.out.println("4 - find by street");
             System.out.println("5 - get all");
+            System.out.println("6 - remove by street");
             System.out.println("-1 - exit");
             option = scanner.nextInt();
+            scanner.nextLine();
+
+            List<Adres> addresses;
+            int id;
 
             switch (option) {
                 case 1:
@@ -47,12 +51,19 @@ public class ShopExample {
                     System.out.println("street: ");
                     String street = scanner.nextLine();
 
-//                    adres = adresRepository.findByStreet(street);
-//                    System.out.println(adres);
+                    addresses = adresRepository.findByStreet(street);
+                    System.out.println(addresses);
                     break;
                 case 5:
-                    List<Adres> addresses = adresRepository.getAll();
+                    addresses = adresRepository.getAll();
                     System.out.println(addresses);
+                case 6:
+                    System.out.println("remove by street");
+                    System.out.println("street: ");
+                    street = scanner.nextLine();
+
+                    adresRepository.removeByStreet(street);
+                    break;
             }
         } while(option != -1);
     }
