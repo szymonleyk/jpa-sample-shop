@@ -2,9 +2,8 @@ package repository;
 
 import entity.Adres;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import javax.persistence.*;
+import java.util.List;
 
 public class AdresRepository {
 
@@ -44,4 +43,21 @@ public class AdresRepository {
         }
         entityManager.close();
     }
+
+    public List<Adres> getAll() {
+        entityManager = emf.createEntityManager();
+
+        TypedQuery<Adres> query = entityManager.createQuery("SELECT a FROM Adres a", Adres.class);
+        List<Adres> addresses = query.getResultList();
+
+        entityManager.close();
+
+        return addresses;
+    }
+
+//    public Adres findByStreet(String street) {
+//        entityManager = emf.createEntityManager();
+//
+//        entityManager.close();
+//    }
 }

@@ -1,6 +1,7 @@
 import entity.Adres;
 import repository.AdresRepository;
 
+import java.util.List;
 import java.util.Scanner;
 
 
@@ -16,6 +17,8 @@ public class ShopExample {
             System.out.println("1 - save");
             System.out.println("2 - get by id");
             System.out.println("3 - remove");
+            System.out.println("4 - find by street");
+            System.out.println("5 - get all");
             System.out.println("-1 - exit");
             option = scanner.nextInt();
 
@@ -40,6 +43,16 @@ public class ShopExample {
 
                     adresRepository.remove(id);
                     break;
+                case 4:
+                    System.out.println("street: ");
+                    String street = scanner.nextLine();
+
+//                    adres = adresRepository.findByStreet(street);
+//                    System.out.println(adres);
+                    break;
+                case 5:
+                    List<Adres> addresses = adresRepository.getAll();
+                    System.out.println(addresses);
             }
         } while(option != -1);
     }

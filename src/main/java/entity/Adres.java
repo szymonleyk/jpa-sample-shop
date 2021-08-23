@@ -43,6 +43,6 @@ public class Adres {
                 ", nrMieszkania=" + nrMieszkania +
                 ", kodPocztowy='" + kodPocztowy + '\'' +
                 ", miejscowosc='" + miejscowosc + '\'' +
-                '}';
+                '}'+"\n";
     }
 }
