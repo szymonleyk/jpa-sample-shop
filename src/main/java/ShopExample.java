@@ -1,31 +1,70 @@
 import entity.Adres;
+import repository.AdresRepository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+import java.util.List;
+import java.util.Scanner;
+
 
 public class ShopExample {
     public static void main(String[] args) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("sklep-persistence-unit");
-        EntityManager entityManager = emf.createEntityManager();
 
-        // pobieranie po id
-        Adres adres = entityManager.find(Adres.class, 4);
-        System.out.println(adres);
+        AdresRepository adresRepository = new AdresRepository();
+        Scanner scanner = new Scanner(System.in);
 
+        int option;
+        do {
+            System.out.println("1 - save");
+            System.out.println("2 - get by id");
+            System.out.println("3 - remove");
+            System.out.println("4 - find by street");
+            System.out.println("5 - get all");
+            System.out.println("6 - remove by street");
+            System.out.println("-1 - exit");
+            option = scanner.nextInt();
+            scanner.nextLine();
 
-        // zapis
-        Adres adres1 = new Adres("Fioletowa", "22", 4, "23-123", "Dąbrowa");
+            List<Adres> addresses;
+            int id;
 
-        try {
-            entityManager.getTransaction().begin();
-            entityManager.persist(adres1);
-            entityManager.getTransaction().commit();
-        } catch (Exception e){
-            entityManager.getTransaction().rollback();
-        }
-        
+            switch (option) {
+                case 1:
+                    System.out.println("save");
+                    Adres adres = new Adres("Fioletowa", "22", 4, "23-123", "Dąbrowa");
 
-        entityManager.close();
+                    adresRepository.save(adres);
+                    break;
+                case 2:
+                    System.out.println("get by id");
+                    System.out.println("Id: ");
+                    id = scanner.nextInt();
+
+                    System.out.println(adresRepository.getById(id));
+                    break;
+                case 3:
+                    System.out.println("remove by id");
+                    System.out.println("Id: ");
+                    id = scanner.nextInt();
+
+                    adresRepository.remove(id);
+                    break;
+                case 4:
+                    System.out.println("street: ");
+                    String street = scanner.nextLine();
+
+                    addresses = adresRepository.findByStreet(street);
+                    System.out.println(addresses);
+                    break;
+                case 5:
+                    addresses = adresRepository.getAll();
+                    System.out.println(addresses);
+                case 6:
+                    System.out.println("remove by street");
+                    System.out.println("street: ");
+                    street = scanner.nextLine();
+
+                    adresRepository.removeByStreet(street);
+                    break;
+            }
+        } while(option != -1);
     }
 }
