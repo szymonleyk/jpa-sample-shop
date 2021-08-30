@@ -24,6 +24,7 @@ public class KlientRepository {
             entityManager.persist(klient);
             entityManager.getTransaction().commit();
         } catch (Exception e){
+            e.printStackTrace();
             entityManager.getTransaction().rollback();
         }
         entityManager.close();
@@ -47,7 +48,7 @@ public class KlientRepository {
     public List<Klient> getAll() {
         entityManager = emf.createEntityManager();
 
-        TypedQuery<Klient> query = entityManager.createQuery("SELECT a FROM Klient a", Klient.class);
+        TypedQuery<Klient> query = entityManager.createQuery("SELECT a FROM Klient a LEFT JOIN FETCH a.adres ", Klient.class);
         List<Klient> klients = query.getResultList();
 
         entityManager.close();

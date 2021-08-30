@@ -1,5 +1,7 @@
 package entity;
 
+import org.hibernate.annotations.ManyToAny;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,16 +15,17 @@ public class Klient {
     private String nazwisko;
     private String email;
 
-    @Column(name = "adres_id")
-    private int adresId;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "adres_id", referencedColumnName = "id")
+    private Adres adres;
 
     public Klient() {}
 
-    public Klient(String imie, String nazwisko, String email, int adresId) {
+    public Klient(String imie, String nazwisko, String email, Adres adres) {
         this.imie = imie;
         this.nazwisko = nazwisko;
         this.email = email;
-        this.adresId = adresId;
+        this.adres = adres;
     }
 
     @Override
@@ -32,7 +35,7 @@ public class Klient {
                 ", imie='" + imie + '\'' +
                 ", nazwisko='" + nazwisko + '\'' +
                 ", email='" + email + '\'' +
-                ", adresId=" + adresId +
+                ", adres=" + adres +
                 '}';
     }
 }
