@@ -7,6 +7,14 @@ import java.util.Set;
 @Entity
 public class Produkt {
 
+    public Produkt() {}
+
+    public Produkt(String nazwa, double cena, int ilosc) {
+        this.nazwa = nazwa;
+        this.cena = cena;
+        this.ilosc = ilosc;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -14,7 +22,4 @@ public class Produkt {
     private String nazwa;
     private double cena;
     private int ilosc;
-
-    @OneToMany(mappedBy = "produkt")
-    Set<PozycjeZamowienia> pozycjeZamowienia;
 }

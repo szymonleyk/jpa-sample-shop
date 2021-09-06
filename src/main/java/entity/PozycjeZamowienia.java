@@ -3,22 +3,31 @@ package entity;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "pozycje_zamowienia")
 public class PozycjeZamowienia {
 
     @EmbeddedId
-    PozycjeZamowieniaKlucz id;
+    PozycjeZamowieniaKlucz id = new PozycjeZamowieniaKlucz();
 
     @ManyToOne
     @MapsId("idZamowienie")
-    @JoinColumn(name="zamowienie_id")
+    @JoinColumn(name="id_zamowienie")
     private Zamowienie zamowienie;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @MapsId("idProdukt")
-    @JoinColumn(name = "produkt_id")
+    @JoinColumn(name = "id_produkt")
     private Produkt produkt;
 
     private int ilosc;
+
+    public PozycjeZamowienia() { }
+
+    public PozycjeZamowienia(Zamowienie zamowienie, Produkt produkt, int ilosc) {
+        this.zamowienie = zamowienie;
+        this.produkt = produkt;
+        this.ilosc = ilosc;
+    }
 
     public PozycjeZamowieniaKlucz getId() {
         return id;

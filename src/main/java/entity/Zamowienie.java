@@ -15,6 +15,14 @@ public class Zamowienie {
     @Column(name = "data_zamowienia", columnDefinition = "TIMESTAMP")
     private LocalDateTime dataZamowienia;
 
-    @OneToMany(mappedBy = "zamowienie")
-    Set<PozycjeZamowienia> pozycjeZamowienia;
+    @ManyToOne
+    @JoinColumn(name = "id_klient", referencedColumnName = "id")
+    private Klient klient;
+
+    public Zamowienie() {}
+
+    public Zamowienie(LocalDateTime dataZamowienia, Klient klient) {
+        this.dataZamowienia = dataZamowienia;
+        this.klient = klient;
+    }
 }

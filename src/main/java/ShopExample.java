@@ -1,11 +1,11 @@
 import com.sun.xml.bind.v2.runtime.output.SAXOutput;
-import entity.Adres;
-import entity.Klient;
-import repository.AdresRepository;
-import repository.KlientRepository;
+import entity.*;
+import repository.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 
 
 public class ShopExample {
@@ -13,6 +13,10 @@ public class ShopExample {
 
         AdresRepository adresRepository = new AdresRepository();
         KlientRepository klientRepository = new KlientRepository();
+        ProduktRepository produktRepository = new ProduktRepository();
+        PozycjeZamowieniaRepository pozycjeZamowieniaRepository = new PozycjeZamowieniaRepository();
+        ZamowienieRepository zamowienieRepository = new ZamowienieRepository();
+
         Scanner scanner = new Scanner(System.in);
 
         int option;
@@ -29,6 +33,10 @@ public class ShopExample {
             System.out.println("12 - get client by id");
             System.out.println("13 - get all clients");
             System.out.println("14 - add client with new address");
+            System.out.println("----- produkt -------");
+            System.out.println("15 - add produkt");
+            System.out.println("----- koszyk -------");
+            System.out.println("16 - zloz zamowienie z produktami");
             System.out.println("--------------------");
             System.out.println("-1 - exit");
             option = scanner.nextInt();
@@ -36,6 +44,7 @@ public class ShopExample {
 
             List<Adres> addresses;
             List<Klient> clients;
+            List<Produkt> products;
             int id;
 
             switch (option) {
@@ -112,6 +121,40 @@ public class ShopExample {
 
                     klientRepository.save(klient);
                     break;
+                case 15:
+                    Produkt produkt = new Produkt("Mleko", 2.33, 5);
+                    produktRepository.save(produkt);
+                    break;
+                case 16:
+//                    System.out.println("Id produktu: ");
+//                    int id1 = scanner.nextInt();
+//
+//                    System.out.println("Id produktu: ");
+//                    int id2 = scanner.nextInt();
+
+                    System.out.println("Id klienta: ");
+                    int idKlienta = scanner.nextInt();
+                    klient = klientRepository.getById(idKlienta);
+
+//                    Produkt produkt1 = produktRepository.getById(id1);
+//                    Produkt produkt2 = produktRepository.getById(id2);
+
+                    Produkt produkt1 = new Produkt("A", 22.3, 2);
+                    Produkt produkt2 = new Produkt("B", 3.12, 2);
+                    produktRepository.save(produkt1);
+                    produktRepository.save(produkt2);
+
+                    Zamowienie zamowienie = new Zamowienie(LocalDateTime.now(), klient);
+                    zamowienieRepository.save(zamowienie);
+
+                    PozycjeZamowienia pozycja1 = new PozycjeZamowienia(zamowienie, produkt1, 2);
+                    PozycjeZamowienia pozycja2 = new PozycjeZamowienia(zamowienie, produkt2, 1);
+
+                    pozycjeZamowieniaRepository.save(pozycja1);
+                    pozycjeZamowieniaRepository.save(pozycja2);
+
+                    break;
+
 
             }
         } while(option != -1);
